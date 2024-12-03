@@ -25,6 +25,10 @@ const createDps = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "File is required" });
     }
+    const existingDps = await Dps.findOne({ nomor: req.body.nomor });
+    if (existingDps) {
+      return res.status(400).json({ message: "Nomor already exists" });
+    }
     const newDps = new Dps({
       fileDps: req.file.filename,
       jenis: req.body.jenis,

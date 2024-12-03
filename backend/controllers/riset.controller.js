@@ -25,6 +25,11 @@ const createRiset = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "File is required" });
     }
+    // Duplicate nomor
+    const existingRiset = await Riset.findOne({ nomor: req.body.nomor });
+    if (existingRiset) {
+      return res.status(400).json({ message: "Nomor already exists" });
+    }
     const newRiset = new Riset({
       fileRiset: req.file.filename,
       jenis: req.body.jenis,
@@ -35,6 +40,7 @@ const createRiset = async (req, res) => {
       kategori: req.body.kategori,
       subKategori: req.body.subKategori,
     });
+
     await newRiset.save();
     res
       .status(201)
