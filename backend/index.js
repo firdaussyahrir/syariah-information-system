@@ -2,14 +2,9 @@ const express = require("express");
 const axios = require("axios");
 const mongoose = require("mongoose");
 
-const multer = require("multer");
-const upload = require("./middleware/upload");
-
-const Dps = require("./models/dps.model.js");
 const dpsRoute = require("./routes/dps.routes.js");
-
-const Riset = require("./models/riset.model.js");
 const risetRoute = require("./routes/riset.routes.js");
+const buletinRoute = require("./routes/buletin.routes.js");
 
 const app = express();
 const port = 3000;
@@ -21,6 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 //routes
 app.use("/api/dps", dpsRoute);
 app.use("/api/riset", risetRoute);
+app.use("/api/buletin", buletinRoute);
 
 app.get("/", (req, res) => {
   res.send("Running...");
