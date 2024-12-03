@@ -1,4 +1,5 @@
 const Dps = require("../models/dps.model.js");
+const upload = require("../middleware/upload.js");
 
 const getAllDps = async (req, res) => {
   try {
@@ -21,8 +22,21 @@ const getDps = async (req, res) => {
 
 const createDps = async (req, res) => {
   try {
-    const dps = await Dps.create(req.body);
-    res.status(200).json(dps);
+    if (!req.file) {
+      return res.status(400).json({ message: "File is required" });
+    }
+    const newDps = new Dps({
+      fileDps: req.file.filename,
+      jenis: req.body.jenis,
+      nomor: req.body.nomor,
+      tanggalMasehi: req.body.tanggalMasehi,
+      judul: req.body.judul,
+      kelompok: req.body.kelompok,
+      kategori: req.body.kategori,
+      subKategori: req.body.subKategori,
+    });
+    await newDps.save();
+    res.status(201).json({ message: "DPS created successfully", data: newDps });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

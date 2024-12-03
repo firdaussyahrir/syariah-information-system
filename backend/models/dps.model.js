@@ -1,11 +1,15 @@
 const mongoose = require("mongoose");
+const upload = require("../middleware/upload.js");
 
 const DpsSchema = new mongoose.Schema(
   {
+    fileDps: {
+      type: String,
+      required: true,
+    },
     jenis: {
       type: String,
       enum: ["Opini DPS", "Risalah Rapat"],
-      required: true,
     },
     nomor: {
       type: String,
@@ -16,10 +20,6 @@ const DpsSchema = new mongoose.Schema(
       required: true,
     },
     judul: {
-      type: String,
-      required: true,
-    },
-    file: {
       type: String,
       required: true,
     },
