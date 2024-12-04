@@ -7,10 +7,6 @@ const RisetSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    jenis: {
-      type: String,
-      enum: ["Opini Riset", "Risalah Rapat"],
-    },
     nomor: {
       type: String,
       required: true,

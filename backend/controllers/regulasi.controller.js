@@ -26,19 +26,25 @@ const createRegulasi = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "File is required" });
     }
-    const existingRegulasi = await Regulasi.findOne({ nomor: req.body.nomor });
+    const existingRegulasi = await Regulasi.findOne({
+      nomorPeraturan: req.body.nomorPeraturan,
+    });
     if (existingRegulasi) {
-      return res.status(400).json({ message: "Nomor already exists" });
+      return res
+        .status(400)
+        .json({ message: "Nomor peraturan already exists" });
     }
     const newRegulasi = new Regulasi({
       fileRegulasi: req.file.filename,
-      jenis: req.body.jenis,
-      nomor: req.body.nomor,
-      tanggalMasehi: req.body.tanggalMasehi,
+      sektor: req.body.sektor,
+      ojk: req.body.ojk,
+      berlakuUntuk: req.body.berlakuUntuk,
+      nomorPeraturan: req.body.nomorPeraturan,
+      tanggal: req.body.tanggal,
       judul: req.body.judul,
       kelompok: req.body.kelompok,
-      kategori: req.body.kategori,
-      subKategori: req.body.subKategori,
+      klasifikasi: req.body.klasifikasi,
+      subKlasifikasi: req.body.subKlasifikasi,
     });
     await newRegulasi.save();
     res
@@ -48,6 +54,8 @@ const createRegulasi = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+module.exports = { createRegulasi };
 
 const updateRegulasi = async (req, res) => {
   try {

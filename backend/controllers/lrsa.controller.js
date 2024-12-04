@@ -35,9 +35,14 @@ const createLrsa = async (req, res) => {
       nomor: req.body.nomor,
       tanggalMasehi: req.body.tanggalMasehi,
       judul: req.body.judul,
-      kelompok: req.body.kelompok,
-      kategori: req.body.kategori,
-      subKategori: req.body.subKategori,
+      namaPIC: req.body.namaPIC,
+      proposedDirectorat: req.body.proposedDirectorat,
+      directorate: req.body.directorate,
+      business: req.body.business,
+      project: req.body.project,
+      review: req.body.review,
+      lrsaType: req.body.lrsaType,
+      classific: req.body.classific,
     });
     await newLrsa.save();
     res

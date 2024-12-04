@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const upload = require("../middleware/upload.js");
 
 const LrsaSchema = new mongoose.Schema(
   {
@@ -10,6 +9,7 @@ const LrsaSchema = new mongoose.Schema(
     jenis: {
       type: String,
       enum: ["SAS", "SLA"],
+      required: true,
     },
     nomor: {
       type: String,
@@ -23,37 +23,86 @@ const LrsaSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    kelompok: {
+    namaPIC: {
       type: String,
       enum: [
-        "Dokumen Legal",
-        "Analisis Riset",
-        "Laporan Keuangan",
-        "Sertifikasi",
-        "Pelatihan",
-        "Evaluasi Internal",
+        "YH Yogi Herdiana",
+        "BHR Berlianto Haris",
+        "MBS M Budi Setiawan",
+        "RRP Rudi Rinaldy Pratama",
+        "DA Diah Arini",
+        "KD Karima Dewi",
       ],
-      default: "Lain-Lain",
       required: true,
     },
-    kategori: {
+    proposedDirectorat: {
       type: String,
       enum: [
-        "Regulasi",
-        "Audit Internal",
-        "Kepatuhan Syariah",
-        "Pelatihan Syariah",
-        "Infrastruktur Syariah",
-        "Manajemen Risiko",
-        "Investasi",
-        "Pembiayaan",
-        "Dana Kebajikan",
+        "SBB Shariah Business Banking",
+        "SCB Shariah Consumer Banking",
+        "SPBA Shariah Risk Control Unit",
+        "SAL Shariah Advisory & Legal",
+        "SS Shariah Strategy",
       ],
-      default: "Lain-Lain",
       required: true,
     },
-    subKategori: {
+    directorate: {
       type: String,
+      enum: [
+        "Shariah",
+        "Banking",
+        "Corporate",
+        "Banking & Financial Institution",
+        "Consumer Banking",
+        "Risk Management",
+        "Compliance Corporate",
+        "Affairs & Legal",
+        "Treasury & Capital Market Strategy",
+        "Finance & SPAPM",
+        "Operation & IT",
+        "Human Resources",
+        "DPS (Dewan Pengawas Syariah)",
+      ],
+      required: true,
+    },
+    business: {
+      type: String,
+      enum: ["Business", "Support"],
+      required: true,
+    },
+    project: {
+      type: String,
+      enum: ["Project", "Non Project", "Secretariat", "DPS", "Dana Kebajikan"],
+      required: true,
+    },
+    review: {
+      type: String,
+      enum: ["Review", "Non Review"],
+      required: true,
+    },
+    lrsaType: {
+      type: String,
+      enum: [
+        "LRSA-SAS",
+        "E-LESA-SAS",
+        "LRSA-SLA",
+        "E-LESA-SLA",
+        "E-LRSA-SLA-NN",
+      ],
+      required: true,
+    },
+    classific: {
+      type: String,
+      enum: [
+        "P&P Policy & Procedure",
+        "P&S Product & Service",
+        "PRG Program",
+        "FIN Financing",
+        "FUND Funding",
+        "MC MarComm",
+        "E Others",
+      ],
+      required: true,
     },
   },
   {
@@ -61,5 +110,5 @@ const LrsaSchema = new mongoose.Schema(
   }
 );
 
-const lrsa = mongoose.model("Lrsa", LrsaSchema);
-module.exports = lrsa;
+const Lrsa = mongoose.model("Lrsa", LrsaSchema);
+module.exports = Lrsa;

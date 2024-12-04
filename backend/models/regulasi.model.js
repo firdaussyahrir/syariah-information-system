@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const upload = require("../middleware/upload.js");
 
 const RegulasiSchema = new mongoose.Schema(
   {
@@ -7,15 +6,37 @@ const RegulasiSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    jenis: {
+    sektor: {
       type: String,
-      enum: ["Peraturan", "Instruksi", "Ketentuan"],
+      enum: ["Perbankan", "Pasar Modal", "Pasar Uang"],
+      required: true,
     },
-    nomor: {
+    kelompok: {
       type: String,
       required: true,
     },
-    tanggalMasehi: {
+    klasifikasi: {
+      type: String,
+      required: true,
+    },
+    subKlasifikasi: {
+      type: String,
+    },
+    ojk: {
+      type: String,
+      enum: ["POJK", "BI", "SEBI"],
+      required: true,
+    },
+    berlakuUntuk: {
+      type: String,
+      enum: ["BU", "BUK", "BUS", "UUS", "Lain-lain"],
+      required: true,
+    },
+    nomorPeraturan: {
+      type: String,
+      required: true,
+    },
+    tanggal: {
       type: Date,
       required: true,
     },
@@ -23,46 +44,11 @@ const RegulasiSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    kelompok: {
-      type: String,
-      enum: [
-        "Produk",
-        "Financing Model",
-        "Program",
-        "Policy & Procedure",
-        "Fitur Produk",
-        "Dana Kebajikan & Zakat",
-      ],
-      default: "Lain-Lain",
-      required: true,
-    },
-    kategori: {
-      type: String,
-      enum: [
-        "Financing",
-        "Asuransi",
-        "Kepatuhan Syariah",
-        "Dana Kebajikan & Zakat",
-        "Funding",
-        "Syariah Card",
-        "Investment",
-        "Trade Finance",
-        "Layanan Jasa",
-        "Zakat",
-        "Treasury",
-        "DBLM",
-      ],
-      default: "Lain-Lain",
-      required: true,
-    },
-    subKategori: {
-      type: String,
-    },
   },
   {
     timestamps: true,
   }
 );
 
-const regulasi = mongoose.model("Regulasi", RegulasiSchema);
-module.exports = regulasi;
+const Regulasi = mongoose.model("Regulasi", RegulasiSchema);
+module.exports = Regulasi;

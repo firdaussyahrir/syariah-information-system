@@ -32,7 +32,6 @@ const createRiset = async (req, res) => {
     }
     const newRiset = new Riset({
       fileRiset: req.file.filename,
-      jenis: req.body.jenis,
       nomor: req.body.nomor,
       tanggalMasehi: req.body.tanggalMasehi,
       judul: req.body.judul,

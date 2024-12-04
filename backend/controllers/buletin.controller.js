@@ -31,7 +31,6 @@ const createBuletin = async (req, res) => {
     }
     const newBuletin = new Buletin({
       fileBuletin: req.file.filename,
-      jenis: req.body.jenis,
       nomor: req.body.nomor,
       tanggalMasehi: req.body.tanggalMasehi,
       judul: req.body.judul,
