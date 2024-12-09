@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const dpsRoute = require("./routes/dps.routes.js");
 const risetRoute = require("./routes/riset.routes.js");
@@ -15,6 +16,10 @@ const port = 3000;
 //midleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Konfigurasi CORS
+app.use(cors());
+app.use(cors({ origin: "http://localhost:5173" }));
 
 //routes
 app.use("/api/dps", dpsRoute);

@@ -13,7 +13,7 @@ const SecNav = () => {
           <ul className="flex space-x-8">
             <li>
               <Link
-                to="#"
+                to="/dps"
                 className="hover:text-[#467599] transition duration-300">
                 DPS
               </Link>
