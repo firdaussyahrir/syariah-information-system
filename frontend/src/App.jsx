@@ -1,28 +1,31 @@
-import { BrowserRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
 
-import FirstNav from "./components/FirstNav";
+import Nav from "./components/Nav";
 import SecNav from "./components/SecNav";
+import Footer from "./components/Footer";
 
-import Home from "./pages/Home/Home";
+import Home from "./pages/home/Home";
 
-import Dps from "./pages/DPS/Dps";
-
-import "./App.css";
+import Dps from "./pages/dps/Dps";
+import Lrsa from "./pages/lrsa/Lrsa";
 
 function App() {
   return (
     <div id="app" className="flex flex-col min-h-screen bg-white">
-      <FirstNav />
-      <SecNav />
+      <Nav />
       <div className="flex flex-1 flex-col">
+        <SecNav />
         <div className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/dps" element={<Dps />} />
+            <Route path="/lrsa" element={<Lrsa />} />
           </Routes>
         </div>
       </div>
+      <Footer />
+      <useScrollTop />
     </div>
   );
 }

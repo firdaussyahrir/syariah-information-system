@@ -1,3 +1,3 @@
-import mainlogo from "./Logo.png";
+import Logo from "./Logo.png";
 
-export { mainlogo };
+export { Logo };
