@@ -3,11 +3,6 @@ import AddDps from "./components/AddDps";
 import ListDps from "./components/ListDps";
 
 const Dps = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
-
   return (
     <div className="flex flex-col bg-gray-50">
       {/* Header */}

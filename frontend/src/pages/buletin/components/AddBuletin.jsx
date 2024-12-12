@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function AddDps() {
+function AddBuletin() {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
-    jenis: "",
+    fileBuletin: null, // Ganti dengan field yang sesuai di schema
     nomor: "",
     tanggalMasehi: "",
     judul: "",
     kelompok: "",
     kategori: "",
     subKategori: "",
-    fileDps: null,
   });
 
   const handleInputChange = (e) => {
@@ -20,7 +19,7 @@ function AddDps() {
   };
 
   const handleFileChange = (e) => {
-    setFormData({ ...formData, fileDps: e.target.files[0] });
+    setFormData({ ...formData, fileBuletin: e.target.files[0] });
   };
 
   const handleSubmit = async (e) => {
@@ -32,7 +31,7 @@ function AddDps() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/dps",
+        "http://localhost:3000/api/buletin", // Endpoint yang sesuai untuk Buletin
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -41,8 +40,8 @@ function AddDps() {
       alert(response.data.message);
       setShowModal(false);
     } catch (error) {
-      console.error("Error creating DPS:", error);
-      alert("Failed to create DPS.");
+      console.error("Error creating buletin:", error);
+      alert("Failed to create buletin.");
     }
   };
 
@@ -52,7 +51,7 @@ function AddDps() {
       <button
         className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
         onClick={() => setShowModal(true)}>
-        Upload DPS
+        Upload Buletin
       </button>
 
       {/* Modal */}
@@ -60,22 +59,31 @@ function AddDps() {
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-md w-1/3 p-6 space-y-4">
             <h2 className="text-2xl font-semibold text-center">
-              Upload File DPS
+              Upload Buletin
             </h2>
             <form onSubmit={handleSubmit}>
               <div className="space-y-3">
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
-                    Jenis
+                    Kelompok
                   </label>
                   <select
-                    name="jenis"
-                    value={formData.jenis}
+                    name="kelompok"
+                    value={formData.kelompok}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
                     <option value="">Select</option>
-                    <option value="Opini DPS">Opini DPS</option>
-                    <option value="Risalah Rapat">Risalah Rapat</option>
+                    <option value="Produk">Produk</option>
+                    <option value="Financing Model">Financing Model</option>
+                    <option value="Program">Program</option>
+                    <option value="Policy & Procedure">
+                      Policy & Procedure
+                    </option>
+                    <option value="Fitur Produk">Fitur Produk</option>
+                    <option value="Dana Kebajikan & Zakat">
+                      Dana Kebajikan & Zakat
+                    </option>
                   </select>
                 </div>
 
@@ -123,36 +131,14 @@ function AddDps() {
 
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
-                    Kelompok
-                  </label>
-                  <select
-                    name="kelompok"
-                    value={formData.kelompok}
-                    onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select</option>
-                    <option value="Produk">Produk</option>
-                    <option value="Financing Model">Financing Model</option>
-                    <option value="Program">Program</option>
-                    <option value="Policy & Procedure">
-                      Policy & Procedure
-                    </option>
-                    <option value="Fitur Produk">Fitur Produk</option>
-                    <option value="Dana Kebajikan & Zakat">
-                      Dana Kebajikan & Zakat
-                    </option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block font-medium text-sm text-gray-600">
                     Kategori
                   </label>
                   <select
                     name="kategori"
                     value={formData.kategori}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
                     <option value="">Select</option>
                     <option value="Financing">Financing</option>
                     <option value="Asuransi">Asuransi</option>
@@ -186,7 +172,7 @@ function AddDps() {
 
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
-                    File DPS
+                    File Buletin
                   </label>
                   <input
                     type="file"
@@ -218,4 +204,4 @@ function AddDps() {
   );
 }
 
-export default AddDps;
+export default AddBuletin;

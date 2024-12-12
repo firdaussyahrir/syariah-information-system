@@ -9,6 +9,10 @@ import Home from "./pages/home/Home";
 
 import Dps from "./pages/dps/Dps";
 import Lrsa from "./pages/lrsa/Lrsa";
+import Riset from "./pages/riset/Riset";
+import Buletin from "./pages/buletin/Buletin";
+import Regulasi from "./pages/regulasi/Regulasi";
+import Dashboard from "./dashboard/Dashboard";
 
 function App() {
   return (
@@ -21,6 +25,10 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/dps" element={<Dps />} />
             <Route path="/lrsa" element={<Lrsa />} />
+            <Route path="/riset" element={<Riset />} />
+            <Route path="/buletin" element={<Buletin />} />
+            <Route path="/regulasi" element={<Regulasi />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </div>
       </div>

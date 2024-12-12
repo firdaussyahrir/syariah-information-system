@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function AddDps() {
+function AddRegulasi() {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
-    jenis: "",
-    nomor: "",
-    tanggalMasehi: "",
-    judul: "",
+    fileRegulasi: null, // Ganti field sesuai dengan schema
+    sektor: "",
     kelompok: "",
-    kategori: "",
-    subKategori: "",
-    fileDps: null,
+    klasifikasi: "",
+    subKlasifikasi: "",
+    ojk: "",
+    berlakuUntuk: "",
+    nomorPeraturan: "",
+    tanggal: "",
+    judul: "",
   });
 
   const handleInputChange = (e) => {
@@ -20,7 +22,7 @@ function AddDps() {
   };
 
   const handleFileChange = (e) => {
-    setFormData({ ...formData, fileDps: e.target.files[0] });
+    setFormData({ ...formData, fileRegulasi: e.target.files[0] });
   };
 
   const handleSubmit = async (e) => {
@@ -32,7 +34,7 @@ function AddDps() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/dps",
+        "http://localhost:3000/api/regulasi", // Endpoint yang sesuai untuk Regulasi
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -41,8 +43,8 @@ function AddDps() {
       alert(response.data.message);
       setShowModal(false);
     } catch (error) {
-      console.error("Error creating DPS:", error);
-      alert("Failed to create DPS.");
+      console.error("Error creating regulasi:", error);
+      alert("Failed to create regulasi.");
     }
   };
 
@@ -52,7 +54,7 @@ function AddDps() {
       <button
         className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
         onClick={() => setShowModal(true)}>
-        Upload DPS
+        Upload Regulasi
       </button>
 
       {/* Modal */}
@@ -60,33 +62,35 @@ function AddDps() {
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-md w-1/3 p-6 space-y-4">
             <h2 className="text-2xl font-semibold text-center">
-              Upload File DPS
+              Upload Regulasi
             </h2>
             <form onSubmit={handleSubmit}>
               <div className="space-y-3">
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
-                    Jenis
+                    Sektor
                   </label>
                   <select
-                    name="jenis"
-                    value={formData.jenis}
+                    name="sektor"
+                    value={formData.sektor}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
                     <option value="">Select</option>
-                    <option value="Opini DPS">Opini DPS</option>
-                    <option value="Risalah Rapat">Risalah Rapat</option>
+                    <option value="Perbankan">Perbankan</option>
+                    <option value="Pasar Modal">Pasar Modal</option>
+                    <option value="Pasar Uang">Pasar Uang</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
-                    Nomor
+                    Kelompok
                   </label>
                   <input
                     type="text"
-                    name="nomor"
-                    value={formData.nomor}
+                    name="kelompok"
+                    value={formData.kelompok}
                     onChange={handleInputChange}
                     className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
@@ -95,12 +99,89 @@ function AddDps() {
 
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
-                    Tanggal Masehi
+                    Klasifikasi
+                  </label>
+                  <input
+                    type="text"
+                    name="klasifikasi"
+                    value={formData.klasifikasi}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-medium text-sm text-gray-600">
+                    Sub-Klasifikasi
+                  </label>
+                  <input
+                    type="text"
+                    name="subKlasifikasi"
+                    value={formData.subKlasifikasi}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-medium text-sm text-gray-600">
+                    OJK
+                  </label>
+                  <select
+                    name="ojk"
+                    value={formData.ojk}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
+                    <option value="">Select</option>
+                    <option value="POJK">POJK</option>
+                    <option value="BI">BI</option>
+                    <option value="SEBI">SEBI</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-medium text-sm text-gray-600">
+                    Berlaku Untuk
+                  </label>
+                  <select
+                    name="berlakuUntuk"
+                    value={formData.berlakuUntuk}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
+                    <option value="">Select</option>
+                    <option value="BU">BU</option>
+                    <option value="BUK">BUK</option>
+                    <option value="BUS">BUS</option>
+                    <option value="UUS">UUS</option>
+                    <option value="Lain-lain">Lain-lain</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-medium text-sm text-gray-600">
+                    Nomor Peraturan
+                  </label>
+                  <input
+                    type="text"
+                    name="nomorPeraturan"
+                    value={formData.nomorPeraturan}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-medium text-sm text-gray-600">
+                    Tanggal
                   </label>
                   <input
                     type="date"
-                    name="tanggalMasehi"
-                    value={formData.tanggalMasehi}
+                    name="tanggal"
+                    value={formData.tanggal}
                     onChange={handleInputChange}
                     className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
@@ -123,70 +204,7 @@ function AddDps() {
 
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
-                    Kelompok
-                  </label>
-                  <select
-                    name="kelompok"
-                    value={formData.kelompok}
-                    onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select</option>
-                    <option value="Produk">Produk</option>
-                    <option value="Financing Model">Financing Model</option>
-                    <option value="Program">Program</option>
-                    <option value="Policy & Procedure">
-                      Policy & Procedure
-                    </option>
-                    <option value="Fitur Produk">Fitur Produk</option>
-                    <option value="Dana Kebajikan & Zakat">
-                      Dana Kebajikan & Zakat
-                    </option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block font-medium text-sm text-gray-600">
-                    Kategori
-                  </label>
-                  <select
-                    name="kategori"
-                    value={formData.kategori}
-                    onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select</option>
-                    <option value="Financing">Financing</option>
-                    <option value="Asuransi">Asuransi</option>
-                    <option value="Kepatuhan Syariah">Kepatuhan Syariah</option>
-                    <option value="Dana Kebajikan & Zakat">
-                      Dana Kebajikan & Zakat
-                    </option>
-                    <option value="Funding">Funding</option>
-                    <option value="Syariah Card">Syariah Card</option>
-                    <option value="Investment">Investment</option>
-                    <option value="Trade Finance">Trade Finance</option>
-                    <option value="Layanan Jasa">Layanan Jasa</option>
-                    <option value="Zakat">Zakat</option>
-                    <option value="Treasury">Treasury</option>
-                    <option value="DBLM">DBLM</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block font-medium text-sm text-gray-600">
-                    Sub-Kategori
-                  </label>
-                  <input
-                    type="text"
-                    name="subKategori"
-                    value={formData.subKategori}
-                    onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block font-medium text-sm text-gray-600">
-                    File DPS
+                    File Regulasi
                   </label>
                   <input
                     type="file"
@@ -218,4 +236,4 @@ function AddDps() {
   );
 }
 
-export default AddDps;
+export default AddRegulasi;

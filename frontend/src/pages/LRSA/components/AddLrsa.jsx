@@ -19,25 +19,41 @@ function AddLrsa() {
     fileLrsa: null,
   });
 
+  // Handle change for input fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Handle file change for file input
   const handleFileChange = (e) => {
-    setFormData({ ...formData, fileLrsa: e.target.files[0] });
+    const file = e.target.files[0];
+    setFormData({ ...formData, fileLrsa: file });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Log the form data before sending it to the server
+    console.log("Form data to send:", formData);
+
     const formDataToSend = new FormData();
+
+    // Append the form fields to FormData object
     for (const key in formData) {
-      formDataToSend.append(key, formData[key]);
+      if (formData[key]) {
+        formDataToSend.append(key, formData[key]);
+      }
+    }
+
+    // Log FormData before sending
+    for (let pair of formDataToSend.entries()) {
+      console.log(pair[0] + ": " + pair[1]);
     }
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/lrsa",
+        "http://localhost:3000/api/lrsa", // Ensure this is the correct endpoint
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -46,7 +62,7 @@ function AddLrsa() {
       alert(response.data.message);
       setShowModal(false);
     } catch (error) {
-      console.error("Error creating LRSA:", error);
+      console.error("Error creating LRSA:", error.response || error);
       alert("Failed to create LRSA.");
     }
   };
@@ -69,6 +85,7 @@ function AddLrsa() {
             </h2>
             <form onSubmit={handleSubmit}>
               <div className="space-y-3">
+                {/* Jenis */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
                     Jenis
@@ -77,13 +94,15 @@ function AddLrsa() {
                     name="jenis"
                     value={formData.jenis}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
                     <option value="">Select</option>
                     <option value="SAS">SAS</option>
                     <option value="SLA">SLA</option>
                   </select>
                 </div>
 
+                {/* Nomor */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
                     Nomor
@@ -98,6 +117,7 @@ function AddLrsa() {
                   />
                 </div>
 
+                {/* Tanggal Masehi */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
                     Tanggal Masehi
@@ -112,6 +132,7 @@ function AddLrsa() {
                   />
                 </div>
 
+                {/* Judul */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
                     Judul
@@ -126,6 +147,7 @@ function AddLrsa() {
                   />
                 </div>
 
+                {/* Nama PIC */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
                     Nama PIC
@@ -134,7 +156,8 @@ function AddLrsa() {
                     name="namaPIC"
                     value={formData.namaPIC}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
                     <option value="">Select</option>
                     <option value="YH Yogi Herdiana">YH Yogi Herdiana</option>
                     <option value="BHR Berlianto Haris">
@@ -151,6 +174,7 @@ function AddLrsa() {
                   </select>
                 </div>
 
+                {/* Proposed Directorate */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
                     Proposed Directorate
@@ -159,7 +183,8 @@ function AddLrsa() {
                     name="proposedDirectorat"
                     value={formData.proposedDirectorat}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
                     <option value="">Select</option>
                     <option value="SBB Shariah Business Banking">
                       SBB Shariah Business Banking
@@ -179,6 +204,7 @@ function AddLrsa() {
                   </select>
                 </div>
 
+                {/* Directorate */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
                     Directorate
@@ -187,32 +213,16 @@ function AddLrsa() {
                     name="directorate"
                     value={formData.directorate}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
                     <option value="">Select</option>
                     <option value="Shariah">Shariah</option>
                     <option value="Banking">Banking</option>
                     <option value="Corporate">Corporate</option>
-                    <option value="Banking & Financial Institution">
-                      Banking & Financial Institution
-                    </option>
-                    <option value="Consumer Banking">Consumer Banking</option>
-                    <option value="Risk Management">Risk Management</option>
-                    <option value="Compliance Corporate">
-                      Compliance Corporate
-                    </option>
-                    <option value="Affairs & Legal">Affairs & Legal</option>
-                    <option value="Treasury & Capital Market Strategy">
-                      Treasury & Capital Market Strategy
-                    </option>
-                    <option value="Finance & SPAPM">Finance & SPAPM</option>
-                    <option value="Operation & IT">Operation & IT</option>
-                    <option value="Human Resources">Human Resources</option>
-                    <option value="DPS (Dewan Pengawas Syariah)">
-                      DPS (Dewan Pengawas Syariah)
-                    </option>
                   </select>
                 </div>
 
+                {/* Business */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
                     Business
@@ -221,13 +231,15 @@ function AddLrsa() {
                     name="business"
                     value={formData.business}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
                     <option value="">Select</option>
                     <option value="Business">Business</option>
                     <option value="Support">Support</option>
                   </select>
                 </div>
 
+                {/* Project */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
                     Project
@@ -236,16 +248,15 @@ function AddLrsa() {
                     name="project"
                     value={formData.project}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
                     <option value="">Select</option>
                     <option value="Project">Project</option>
                     <option value="Non Project">Non Project</option>
-                    <option value="Secretariat">Secretariat</option>
-                    <option value="DPS">DPS</option>
-                    <option value="Dana Kebajikan">Dana Kebajikan</option>
                   </select>
                 </div>
 
+                {/* Review */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
                     Review
@@ -254,13 +265,15 @@ function AddLrsa() {
                     name="review"
                     value={formData.review}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
                     <option value="">Select</option>
                     <option value="Review">Review</option>
                     <option value="Non Review">Non Review</option>
                   </select>
                 </div>
 
+                {/* LRSA Type */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
                     LRSA Type
@@ -269,16 +282,17 @@ function AddLrsa() {
                     name="lrsaType"
                     value={formData.lrsaType}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
                     <option value="">Select</option>
                     <option value="LRSA-SAS">LRSA-SAS</option>
                     <option value="E-LESA-SAS">E-LESA-SAS</option>
                     <option value="LRSA-SLA">LRSA-SLA</option>
                     <option value="E-LESA-SLA">E-LESA-SLA</option>
-                    <option value="E-LRSA-SLA-NN">E-LRSA-SLA-NN</option>
                   </select>
                 </div>
 
+                {/* Classific */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
                     Classific
@@ -287,7 +301,8 @@ function AddLrsa() {
                     name="classific"
                     value={formData.classific}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required>
                     <option value="">Select</option>
                     <option value="P&P Policy & Procedure">
                       P&P Policy & Procedure
@@ -298,18 +313,10 @@ function AddLrsa() {
                     <option value="PRG Program">PRG Program</option>
                     <option value="FIN Financing">FIN Financing</option>
                     <option value="FUND Funding">FUND Funding</option>
-                    <option value="COM Compliance">COM Compliance</option>
-                    <option value="R&C Risk Control">R&C Risk Control</option>
-                    <option value="T&C Terms & Conditions">
-                      T&C Terms & Conditions
-                    </option>
-                    <option value="SHR Shariah">SHR Shariah</option>
-                    <option value="S&L Service & Licensing">
-                      S&L Service & Licensing
-                    </option>
                   </select>
                 </div>
 
+                {/* File LRSA */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
                     File LRSA
@@ -324,16 +331,17 @@ function AddLrsa() {
                 </div>
               </div>
 
-              <div className="mt-4 flex justify-between">
+              {/* Action Buttons */}
+              <div className="flex justify-end space-x-4 mt-4">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition">
-                  Close
+                  className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition">
+                  Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+                  className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition">
                   Submit
                 </button>
               </div>
