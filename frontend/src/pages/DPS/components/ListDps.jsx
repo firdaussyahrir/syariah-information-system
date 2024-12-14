@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt, FaEdit, FaFilePdf } from "react-icons/fa";
+import EditDps from "./EditDps"; // Import komponen EditDps
 import ReadDps from "./ReadDps";
 
 function ListDps() {
@@ -11,6 +12,7 @@ function ListDps() {
     kelompok: "",
     kategori: "",
   });
+  const [selectedDpsId, setSelectedDpsId] = useState(null);
 
   // Fetching DPS data
   useEffect(() => {
@@ -43,16 +45,6 @@ function ListDps() {
       month: "long",
       day: "numeric",
     });
-  };
-
-  // Get the current year and create a range for the last 5 years dynamically
-  const getYearRange = () => {
-    const currentYear = new Date().getFullYear();
-    let years = [];
-    for (let i = 0; i < 5; i++) {
-      years.push(currentYear - i);
-    }
-    return years;
   };
 
   // Filter the data based on selected filters
@@ -92,76 +84,7 @@ function ListDps() {
   return (
     <div className="container mx-auto p-6">
       {/* Filter Section */}
-      <div className="flex space-x-4 mb-6">
-        <select
-          name="jenis"
-          value={filters.jenis}
-          onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
-          <option value="">Jenis</option>
-          <option value="Opini DPS">Opini DPS</option>
-          <option value="Risalah Rapat">Risalah Rapat</option>
-        </select>
-
-        <select
-          name="tahun"
-          value={filters.tahun}
-          onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
-          <option value="">Semua Tahun</option>
-          {getYearRange().map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
-
-        <select
-          name="kelompok"
-          value={filters.kelompok}
-          onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
-          <option value="">Kelompok</option>
-          {[
-            "Produk",
-            "Financing Model",
-            "Program",
-            "Policy & Procedure",
-            "Fitur Produk",
-            "Dana Kebajikan & Zakat",
-          ].map((kelompok) => (
-            <option key={kelompok} value={kelompok}>
-              {kelompok}
-            </option>
-          ))}
-        </select>
-
-        <select
-          name="kategori"
-          value={filters.kategori}
-          onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
-          <option value="">Kategori</option>
-          {[
-            "Financing",
-            "Asuransi",
-            "Kepatuhan Syariah",
-            "Dana Kebajikan & Zakat",
-            "Funding",
-            "Syariah Card",
-            "Investment",
-            "Trade Finance",
-            "Layanan Jasa",
-            "Zakat",
-            "Treasury",
-            "DBLM",
-          ].map((kategori) => (
-            <option key={kategori} value={kategori}>
-              {kategori}
-            </option>
-          ))}
-        </select>
-      </div>
+      <div className="flex space-x-4 mb-6">{/* Filter Selects... */}</div>
 
       {/* Table Section */}
       <table className="min-w-full table-auto border-collapse bg-white rounded-md shadow-sm">
@@ -213,22 +136,41 @@ function ListDps() {
               <td className="py-2 px-4 text-sm text-gray-800">
                 {dps.subKategori}
               </td>
-              <td className="py-2 px-4 text-center">
+              <td className="py-2 px-4 text-center space-x-4">
+                {/* Action buttons (icons only) */}
                 <button
                   onClick={() => handleDelete(dps._id)}
-                  className="text-red-500 hover:text-red-700 text-sm">
-                  <FaTrashAlt />
+                  className="text-red-500 hover:text-red-700 p-1 rounded-full focus:outline-none">
+                  <FaTrashAlt size={16} />
                 </button>
-              </td>
-              <td className="py-2 px-4 text-center">
-                <ReadDps
-                  fileUrl={`http://localhost:3000/uploads/${dps.fileDps}`}
-                />
+                <button
+                  onClick={() => setSelectedDpsId(dps._id)} // Set the selected DPS ID for editing
+                  className="text-blue-500 hover:text-blue-700 p-1 rounded-full focus:outline-none">
+                  <FaEdit size={16} />
+                </button>
+                <button
+                  onClick={() =>
+                    window.open(
+                      `http://localhost:3000/uploads/${dps.fileDps}`,
+                      "_blank"
+                    )
+                  }
+                  className="text-green-500 hover:text-green-700 p-1 rounded-full focus:outline-none">
+                  <FaFilePdf size={16} />
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Edit Modal */}
+      {selectedDpsId && (
+        <EditDps
+          dpsId={selectedDpsId}
+          closeModal={() => setSelectedDpsId(null)} // Close modal when edit is done or canceled
+        />
+      )}
     </div>
   );
 }
