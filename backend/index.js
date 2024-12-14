@@ -2,6 +2,7 @@ const express = require("express");
 const axios = require("axios");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require("path");
 
 const dpsRoute = require("./routes/dps.routes.js");
 const risetRoute = require("./routes/riset.routes.js");
@@ -21,6 +22,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(cors({ origin: "http://localhost:5173" }));
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 //routes
 app.use("/api/dps", dpsRoute);
 app.use("/api/riset", risetRoute);
@@ -37,7 +40,7 @@ app.listen(port, () => {
   console.log(`SIS Running on Port ${port}`);
 });
 
-mongoose.connect("mongodb+srv://syariah:portal@cluster0.9z3cf.mongodb.net/");
+mongoose.connect("mongodb+srv://13020210014:sis@cluster0.tjnmk.mongodb.net/");
 const db = mongoose.connection;
 db.on("error", (err) => console.log(err));
 db.once("open", () => console.log("Connected to MongoDB"));

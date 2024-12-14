@@ -57,7 +57,6 @@ function ListRiset() {
 
     if (confirmed) {
       try {
-        // Gantilah URL API dari dps menjadi riset
         const response = await axios.delete(
           `http://localhost:3000/api/riset/${id}`
         );
@@ -78,6 +77,16 @@ function ListRiset() {
     }
   };
 
+  // Get the current year and create a range for the last 5 years dynamically
+  const getYearRange = () => {
+    const currentYear = new Date().getFullYear();
+    let years = [];
+    for (let i = 0; i < 5; i++) {
+      years.push(currentYear - i);
+    }
+    return years;
+  };
+
   return (
     <div className="container mx-auto p-6">
       {/* Filter Section */}
@@ -86,23 +95,20 @@ function ListRiset() {
           name="tahun"
           value={filters.tahun}
           onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
           <option value="">Tahun</option>
-          {risetData
-            .map((data) => data.tanggalMasehi.slice(0, 4))
-            .filter((value, index, self) => self.indexOf(value) === index) // Get unique years
-            .map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
+          {getYearRange().map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
         </select>
 
         <select
           name="kelompok"
           value={filters.kelompok}
           onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
           <option value="">Kelompok</option>
           {[
             "Produk",
@@ -122,7 +128,7 @@ function ListRiset() {
           name="kategori"
           value={filters.kategori}
           onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
           <option value="">Kategori</option>
           {[
             "Financing",
@@ -146,31 +152,55 @@ function ListRiset() {
       </div>
 
       {/* Table Section */}
-      <table className="min-w-full table-auto border-collapse">
+      <table className="min-w-full table-auto border-collapse bg-white rounded-md shadow-sm">
         <thead>
           <tr className="bg-gray-100 text-left">
-            <th className="py-2 px-4 border-b">No</th>
-            <th className="py-2 px-4 border-b">Nomor</th>
-            <th className="py-2 px-4 border-b">Tanggal Masehi</th>
-            <th className="py-2 px-4 border-b">Judul</th>
-            <th className="py-2 px-4 border-b">Kelompok</th>
-            <th className="py-2 px-4 border-b">Kategori</th>
-            <th className="py-2 px-4 border-b">Action</th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">No</th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Nomor
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Tanggal Masehi
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Judul
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Kelompok
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Kategori
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Sub Kategori
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
           {filteredData.map((data, index) => (
-            <tr key={data.id} className="border-b">
-              <td className="py-2 px-4">{index + 1}</td>
-              <td className="py-2 px-4">{data.nomor}</td>
-              <td className="py-2 px-4">{formatDate(data.tanggalMasehi)}</td>
-              <td className="py-2 px-4">{data.judul}</td>
-              <td className="py-2 px-4">{data.kelompok}</td>
-              <td className="py-2 px-4">{data.kategori}</td>
+            <tr key={data.id} className="border-t">
+              <td className="py-2 px-4 text-sm text-gray-800">{index + 1}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">{data.nomor}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {formatDate(data.tanggalMasehi)}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">{data.judul}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {data.kelompok}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {data.kategori}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {data.subKategori || "-"}
+              </td>
               <td className="py-2 px-4 text-center">
                 <button
                   onClick={() => handleDelete(data.id)}
-                  className="text-red-500 hover:text-red-700">
+                  className="text-red-500 hover:text-red-700 text-sm">
                   <FaTrashAlt />
                 </button>
               </td>

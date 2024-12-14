@@ -47,31 +47,27 @@ function AddRiset() {
 
   return (
     <div>
-      {/* Button to Open Modal */}
       <button
-        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+        className="bg-blue-500 text-white px-6 py-3 rounded-md"
         onClick={() => setShowModal(true)}>
         Upload Riset
       </button>
 
-      {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-md w-1/3 p-6 space-y-4">
-            <h2 className="text-2xl font-semibold text-center">
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-md max-w-[800px] w-full p-6 space-y-4">
+            <h2 className="text-xl font-medium text-center text-gray-800">
               Upload File Riset
             </h2>
             <form onSubmit={handleSubmit}>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
-                    Jenis
-                  </label>
+                  <label className="block text-sm text-gray-700">Jenis</label>
                   <select
                     name="kelompok"
                     value={formData.kelompok}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
                     <option value="">Select</option>
                     <option value="Produk">Produk</option>
                     <option value="Financing Model">Financing Model</option>
@@ -87,21 +83,19 @@ function AddRiset() {
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
-                    Nomor
-                  </label>
+                  <label className="block text-sm text-gray-700">Nomor</label>
                   <input
                     type="text"
                     name="nomor"
                     value={formData.nomor}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm text-gray-700">
                     Tanggal Masehi
                   </label>
                   <input
@@ -109,34 +103,32 @@ function AddRiset() {
                     name="tanggalMasehi"
                     value={formData.tanggalMasehi}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
-                    Judul
-                  </label>
+                  <label className="block text-sm text-gray-700">Judul</label>
                   <input
                     type="text"
                     name="judul"
                     value={formData.judul}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm text-gray-700">
                     Kategori
                   </label>
                   <select
                     name="kategori"
                     value={formData.kategori}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
                     <option value="">Select</option>
                     <option value="Financing">Financing</option>
                     <option value="Asuransi">Asuransi</option>
@@ -156,7 +148,7 @@ function AddRiset() {
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm text-gray-700">
                     Sub-Kategori
                   </label>
                   <input
@@ -164,18 +156,18 @@ function AddRiset() {
                     name="subKategori"
                     value={formData.subKategori}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm text-gray-700">
                     File Riset
                   </label>
                   <input
                     type="file"
                     onChange={handleFileChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
@@ -185,12 +177,12 @@ function AddRiset() {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition">
+                  className="bg-gray-300 text-gray-700 px-6 py-3 rounded-md">
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition">
+                  className="bg-green-500 text-white px-6 py-3 rounded-md">
                   Submit
                 </button>
               </div>

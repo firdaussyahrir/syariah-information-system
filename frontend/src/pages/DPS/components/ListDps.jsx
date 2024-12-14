@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaTrashAlt } from "react-icons/fa"; // Importing trash icon
+import { FaTrashAlt } from "react-icons/fa";
+import ReadDps from "./ReadDps";
 
 function ListDps() {
   const [dpsList, setDpsList] = useState([]);
@@ -96,7 +97,7 @@ function ListDps() {
           name="jenis"
           value={filters.jenis}
           onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
           <option value="">Jenis</option>
           <option value="Opini DPS">Opini DPS</option>
           <option value="Risalah Rapat">Risalah Rapat</option>
@@ -106,7 +107,7 @@ function ListDps() {
           name="tahun"
           value={filters.tahun}
           onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
           <option value="">Semua Tahun</option>
           {getYearRange().map((year) => (
             <option key={year} value={year}>
@@ -119,7 +120,7 @@ function ListDps() {
           name="kelompok"
           value={filters.kelompok}
           onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
           <option value="">Kelompok</option>
           {[
             "Produk",
@@ -139,7 +140,7 @@ function ListDps() {
           name="kategori"
           value={filters.kategori}
           onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
           <option value="">Kategori</option>
           {[
             "Financing",
@@ -163,37 +164,66 @@ function ListDps() {
       </div>
 
       {/* Table Section */}
-      <table className="min-w-full table-auto border-collapse">
+      <table className="min-w-full table-auto border-collapse bg-white rounded-md shadow-sm">
         <thead>
           <tr className="bg-gray-100 text-left">
-            <th className="py-2 px-4 border-b">No</th>
-            <th className="py-2 px-4 border-b">Jenis</th>
-            <th className="py-2 px-4 border-b">Nomor</th>
-            <th className="py-2 px-4 border-b">Tanggal Masehi</th>
-            <th className="py-2 px-4 border-b">Judul</th>
-            <th className="py-2 px-4 border-b">Kelompok</th>
-            <th className="py-2 px-4 border-b">Kategori</th>
-            <th className="py-2 px-4 border-b">Sub Kategori</th>
-            <th className="py-2 px-4 border-b">Action</th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">No</th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Jenis
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Nomor
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Tanggal Masehi
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Judul
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Kelompok
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Kategori
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Sub Kategori
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
           {filteredDps.map((dps, index) => (
-            <tr key={dps._id} className="border-b">
-              <td className="py-2 px-4">{index + 1}</td>
-              <td className="py-2 px-4">{dps.jenis}</td>
-              <td className="py-2 px-4">{dps.nomor}</td>
-              <td className="py-2 px-4">{formatDate(dps.tanggalMasehi)}</td>
-              <td className="py-2 px-4">{dps.judul}</td>
-              <td className="py-2 px-4">{dps.kelompok}</td>
-              <td className="py-2 px-4">{dps.kategori}</td>
-              <td className="py-2 px-4">{dps.subKategori}</td>
+            <tr key={dps._id} className="border-t">
+              <td className="py-2 px-4 text-sm text-gray-800">{index + 1}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">{dps.jenis}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">{dps.nomor}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {formatDate(dps.tanggalMasehi)}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">{dps.judul}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {dps.kelompok}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {dps.kategori}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {dps.subKategori}
+              </td>
               <td className="py-2 px-4 text-center">
                 <button
                   onClick={() => handleDelete(dps._id)}
-                  className="text-red-500 hover:text-red-700">
+                  className="text-red-500 hover:text-red-700 text-sm">
                   <FaTrashAlt />
                 </button>
+              </td>
+              <td className="py-2 px-4 text-center">
+                <ReadDps
+                  fileUrl={`http://localhost:3000/uploads/${dps.fileDps}`}
+                />
               </td>
             </tr>
           ))}

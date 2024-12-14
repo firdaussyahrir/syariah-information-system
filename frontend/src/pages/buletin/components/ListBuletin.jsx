@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaTrash } from "react-icons/fa"; // Import React icon for delete button
+import { FaTrashAlt } from "react-icons/fa"; // Importing trash icon
 
 const ListBuletin = () => {
   const [buletins, setBuletins] = useState([]);
@@ -8,7 +8,6 @@ const ListBuletin = () => {
     tahun: "",
     kelompok: "",
     kategori: "",
-    subKategori: "",
   });
 
   useEffect(() => {
@@ -58,8 +57,7 @@ const ListBuletin = () => {
         new Date(buletin.tanggalMasehi).getFullYear().toString() ===
           filters.tahun) &&
       (!filters.kelompok || buletin.kelompok === filters.kelompok) &&
-      (!filters.kategori || buletin.kategori === filters.kategori) &&
-      (!filters.subKategori || buletin.subKategori === filters.subKategori)
+      (!filters.kategori || buletin.kategori === filters.kategori)
     );
   });
 
@@ -70,6 +68,16 @@ const ListBuletin = () => {
     return date.toLocaleDateString("id-ID", options); // 'id-ID' for Indonesian locale
   };
 
+  // Get the current year and create a range for the last 5 years dynamically
+  const getYearRange = () => {
+    const currentYear = new Date().getFullYear();
+    let years = [];
+    for (let i = 0; i < 5; i++) {
+      years.push(currentYear - i);
+    }
+    return years;
+  };
+
   return (
     <div className="container mx-auto p-6">
       {/* Filter Section */}
@@ -78,15 +86,9 @@ const ListBuletin = () => {
           name="tahun"
           value={filters.tahun}
           onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
           <option value="">Tahun</option>
-          {Array.from(
-            new Set(
-              buletins.map((buletin) =>
-                new Date(buletin.tanggalMasehi).getFullYear()
-              )
-            )
-          ).map((year) => (
+          {getYearRange().map((year) => (
             <option key={year} value={year}>
               {year}
             </option>
@@ -97,77 +99,104 @@ const ListBuletin = () => {
           name="kelompok"
           value={filters.kelompok}
           onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
           <option value="">Kelompok</option>
-          <option value="Produk">Produk</option>
-          <option value="Financing Model">Financing Model</option>
-          <option value="Program">Program</option>
-          <option value="Policy & Procedure">Policy & Procedure</option>
-          <option value="Fitur Produk">Fitur Produk</option>
-          <option value="Dana Kebajikan & Zakat">Dana Kebajikan & Zakat</option>
+          {[
+            "Produk",
+            "Financing Model",
+            "Program",
+            "Policy & Procedure",
+            "Fitur Produk",
+            "Dana Kebajikan & Zakat",
+          ].map((kelompok) => (
+            <option key={kelompok} value={kelompok}>
+              {kelompok}
+            </option>
+          ))}
         </select>
 
         <select
           name="kategori"
           value={filters.kategori}
           onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
           <option value="">Kategori</option>
-          <option value="Financing">Financing</option>
-          <option value="Asuransi">Asuransi</option>
-          <option value="Kepatuhan Syariah">Kepatuhan Syariah</option>
-          <option value="Dana Kebajikan & Zakat">Dana Kebajikan & Zakat</option>
-          <option value="Funding">Funding</option>
-          <option value="Syariah Card">Syariah Card</option>
-          <option value="Investment">Investment</option>
-          <option value="Trade Finance">Trade Finance</option>
-          <option value="Layanan Jasa">Layanan Jasa</option>
-          <option value="Zakat">Zakat</option>
-          <option value="Treasury">Treasury</option>
-          <option value="DBLM">DBLM</option>
-        </select>
-
-        <select
-          name="subKategori"
-          value={filters.subKategori}
-          onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
-          <option value="">Sub-Kategori</option>
-          <option value="Sub-Kategori 1">Sub-Kategori 1</option>
-          <option value="Sub-Kategori 2">Sub-Kategori 2</option>
-          <option value="Sub-Kategori 3">Sub-Kategori 3</option>
+          {[
+            "Financing",
+            "Asuransi",
+            "Kepatuhan Syariah",
+            "Dana Kebajikan & Zakat",
+            "Funding",
+            "Syariah Card",
+            "Investment",
+            "Trade Finance",
+            "Layanan Jasa",
+            "Zakat",
+            "Treasury",
+            "DBLM",
+          ].map((kategori) => (
+            <option key={kategori} value={kategori}>
+              {kategori}
+            </option>
+          ))}
         </select>
       </div>
 
       {/* Table Section */}
-      <table className="min-w-full table-auto border-collapse">
+      <table className="min-w-full table-auto border-collapse bg-white rounded-md shadow-sm">
         <thead>
           <tr className="bg-gray-100 text-left">
-            <th className="py-2 px-4 border-b">No</th>
-            <th className="py-2 px-4 border-b">Nomor</th>
-            <th className="py-2 px-4 border-b">Tanggal Masehi</th>
-            <th className="py-2 px-4 border-b">Judul</th>
-            <th className="py-2 px-4 border-b">Kelompok</th>
-            <th className="py-2 px-4 border-b">Kategori</th>
-            <th className="py-2 px-4 border-b">Sub-Kategori</th>
-            <th className="py-2 px-4 border-b">Action</th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">No</th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Nomor
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Tanggal Masehi
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Judul
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Kelompok
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Kategori
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Sub Kategori
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
           {filteredBuletins.map((buletin, index) => (
-            <tr key={buletin._id} className="border-b">
-              <td className="py-2 px-4">{index + 1}</td>
-              <td className="py-2 px-4">{buletin.nomor}</td>
-              <td className="py-2 px-4">{formatDate(buletin.tanggalMasehi)}</td>
-              <td className="py-2 px-4">{buletin.judul}</td>
-              <td className="py-2 px-4">{buletin.kelompok}</td>
-              <td className="py-2 px-4">{buletin.kategori}</td>
-              <td className="py-2 px-4">{buletin.subKategori || "-"}</td>
+            <tr key={buletin._id} className="border-t">
+              <td className="py-2 px-4 text-sm text-gray-800">{index + 1}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {buletin.nomor}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {formatDate(buletin.tanggalMasehi)}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {buletin.judul}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {buletin.kelompok}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {buletin.kategori}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {buletin.subKategori || "-"}
+              </td>
               <td className="py-2 px-4 text-center">
                 <button
                   onClick={() => handleDelete(buletin._id)}
-                  className="text-red-500 hover:text-red-700">
-                  <FaTrash />
+                  className="text-red-500 hover:text-red-700 text-sm">
+                  <FaTrashAlt />
                 </button>
               </td>
             </tr>

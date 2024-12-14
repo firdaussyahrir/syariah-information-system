@@ -2,10 +2,10 @@ import { Routes, Route } from "react-router-dom";
 import React, { useState } from "react";
 
 import Nav from "./components/Nav";
-import SecNav from "./components/SecNav";
 import Footer from "./components/Footer";
 
 import Home from "./pages/home/Home";
+import Login from "./pages/login/Login";
 
 import Dps from "./pages/dps/Dps";
 import Lrsa from "./pages/lrsa/Lrsa";
@@ -19,7 +19,6 @@ function App() {
     <div id="app" className="flex flex-col min-h-screen bg-white">
       <Nav />
       <div className="flex flex-1 flex-col">
-        <SecNav />
         <div className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -29,6 +28,7 @@ function App() {
             <Route path="/buletin" element={<Buletin />} />
             <Route path="/regulasi" element={<Regulasi />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </div>
       </div>

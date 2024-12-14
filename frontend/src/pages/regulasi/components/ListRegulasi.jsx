@@ -86,7 +86,7 @@ function ListRegulasi() {
           name="tahun"
           value={filters.tahun}
           onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
+          className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
           <option value="">Tahun</option>
           {regulasiData
             .map((data) => data.tanggal.slice(0, 4)) // Extract year from tanggal
@@ -103,7 +103,7 @@ function ListRegulasi() {
           name="sektor"
           value={filters.sektor}
           onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
+          className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
           <option value="">Sektor</option>
           {["Perbankan", "Pasar Modal", "Pasar Uang"].map((sektor) => (
             <option key={sektor} value={sektor}>
@@ -117,7 +117,7 @@ function ListRegulasi() {
           name="ojk"
           value={filters.ojk}
           onChange={handleFilterChange}
-          className="p-2 border border-gray-300 rounded-lg">
+          className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
           <option value="">OJK</option>
           {["POJK", "BI", "SEBI"].map((ojk) => (
             <option key={ojk} value={ojk}>
@@ -128,39 +128,69 @@ function ListRegulasi() {
       </div>
 
       {/* Table Section */}
-      <table className="min-w-full table-auto border-collapse">
+      <table className="min-w-full table-auto border-collapse bg-white rounded-md shadow-sm">
         <thead>
           <tr className="bg-gray-100 text-left">
-            <th className="py-2 px-4 border-b">No</th>
-            <th className="py-2 px-4 border-b">Nomor Peraturan</th>
-            <th className="py-2 px-4 border-b">Judul</th>
-            <th className="py-2 px-4 border-b">Sektor</th>
-            <th className="py-2 px-4 border-b">Kelompok</th>
-            <th className="py-2 px-4 border-b">Klasifikasi</th>
-            <th className="py-2 px-4 border-b">Sub Klasifikasi</th>
-            <th className="py-2 px-4 border-b">OJK</th>
-            <th className="py-2 px-4 border-b">Berlaku Untuk</th>
-            <th className="py-2 px-4 border-b">Tanggal</th>
-            <th className="py-2 px-4 border-b">Action</th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">No</th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Nomor Peraturan
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Judul
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Sektor
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Kelompok
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Klasifikasi
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Sub Klasifikasi
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">OJK</th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Berlaku Untuk
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Tanggal
+            </th>
+            <th className="py-2 px-4 text-sm font-medium text-gray-600">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
           {filteredData.map((data, index) => (
-            <tr key={data._id} className="border-b">
-              <td className="py-2 px-4">{index + 1}</td>
-              <td className="py-2 px-4">{data.nomorPeraturan}</td>
-              <td className="py-2 px-4">{data.judul}</td>
-              <td className="py-2 px-4">{data.sektor}</td>
-              <td className="py-2 px-4">{data.kelompok}</td>
-              <td className="py-2 px-4">{data.klasifikasi}</td>
-              <td className="py-2 px-4">{data.subKlasifikasi}</td>
-              <td className="py-2 px-4">{data.ojk}</td>
-              <td className="py-2 px-4">{data.berlakuUntuk}</td>
-              <td className="py-2 px-4">{formatDate(data.tanggal)}</td>
+            <tr key={data._id} className="border-t">
+              <td className="py-2 px-4 text-sm text-gray-800">{index + 1}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {data.nomorPeraturan}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">{data.judul}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">{data.sektor}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {data.kelompok}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {data.klasifikasi}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {data.subKlasifikasi || "-"}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">{data.ojk}</td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {data.berlakuUntuk}
+              </td>
+              <td className="py-2 px-4 text-sm text-gray-800">
+                {formatDate(data.tanggal)}
+              </td>
               <td className="py-2 px-4 text-center">
                 <button
                   onClick={() => handleDelete(data._id)}
-                  className="text-red-500 hover:text-red-700">
+                  className="text-red-500 hover:text-red-700 text-sm">
                   <FaTrashAlt />
                 </button>
               </td>

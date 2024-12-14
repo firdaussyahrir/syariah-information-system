@@ -4,7 +4,7 @@ import axios from "axios";
 function AddRegulasi() {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
-    fileRegulasi: null, // Ganti field sesuai dengan schema
+    fileRegulasi: null,
     sektor: "",
     kelompok: "",
     klasifikasi: "",
@@ -34,7 +34,7 @@ function AddRegulasi() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/regulasi", // Endpoint yang sesuai untuk Regulasi
+        "http://localhost:3000/api/regulasi",
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -50,31 +50,27 @@ function AddRegulasi() {
 
   return (
     <div>
-      {/* Button to Open Modal */}
       <button
-        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+        className="bg-blue-500 text-white px-6 py-3 rounded-md"
         onClick={() => setShowModal(true)}>
         Upload Regulasi
       </button>
 
-      {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-md w-1/3 p-6 space-y-4">
-            <h2 className="text-2xl font-semibold text-center">
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-md max-w-[800px] w-full p-6 space-y-4">
+            <h2 className="text-xl font-medium text-center text-gray-800">
               Upload Regulasi
             </h2>
             <form onSubmit={handleSubmit}>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
-                    Sektor
-                  </label>
+                  <label className="block text-sm text-gray-700">Sektor</label>
                   <select
                     name="sektor"
                     value={formData.sektor}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required>
                     <option value="">Select</option>
                     <option value="Perbankan">Perbankan</option>
@@ -84,7 +80,7 @@ function AddRegulasi() {
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm text-gray-700">
                     Kelompok
                   </label>
                   <input
@@ -92,13 +88,13 @@ function AddRegulasi() {
                     name="kelompok"
                     value={formData.kelompok}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm text-gray-700">
                     Klasifikasi
                   </label>
                   <input
@@ -106,13 +102,13 @@ function AddRegulasi() {
                     name="klasifikasi"
                     value={formData.klasifikasi}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm text-gray-700">
                     Sub-Klasifikasi
                   </label>
                   <input
@@ -120,19 +116,17 @@ function AddRegulasi() {
                     name="subKlasifikasi"
                     value={formData.subKlasifikasi}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
-                    OJK
-                  </label>
+                  <label className="block text-sm text-gray-700">OJK</label>
                   <select
                     name="ojk"
                     value={formData.ojk}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required>
                     <option value="">Select</option>
                     <option value="POJK">POJK</option>
@@ -142,14 +136,14 @@ function AddRegulasi() {
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm text-gray-700">
                     Berlaku Untuk
                   </label>
                   <select
                     name="berlakuUntuk"
                     value={formData.berlakuUntuk}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required>
                     <option value="">Select</option>
                     <option value="BU">BU</option>
@@ -161,7 +155,7 @@ function AddRegulasi() {
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm text-gray-700">
                     Nomor Peraturan
                   </label>
                   <input
@@ -169,47 +163,43 @@ function AddRegulasi() {
                     name="nomorPeraturan"
                     value={formData.nomorPeraturan}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
-                    Tanggal
-                  </label>
+                  <label className="block text-sm text-gray-700">Tanggal</label>
                   <input
                     type="date"
                     name="tanggal"
                     value={formData.tanggal}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
-                    Judul
-                  </label>
+                  <label className="block text-sm text-gray-700">Judul</label>
                   <input
                     type="text"
                     name="judul"
                     value={formData.judul}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm text-gray-700">
                     File Regulasi
                   </label>
                   <input
                     type="file"
                     onChange={handleFileChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
@@ -219,12 +209,12 @@ function AddRegulasi() {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition">
+                  className="bg-gray-300 text-gray-700 px-6 py-3 rounded-md">
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition">
+                  className="bg-green-500 text-white px-6 py-3 rounded-md">
                   Submit
                 </button>
               </div>

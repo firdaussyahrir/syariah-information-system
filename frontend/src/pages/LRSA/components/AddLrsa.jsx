@@ -19,13 +19,11 @@ function AddLrsa() {
     fileLrsa: null,
   });
 
-  // Handle change for input fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle file change for file input
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFormData({ ...formData, fileLrsa: file });
@@ -34,26 +32,16 @@ function AddLrsa() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Log the form data before sending it to the server
-    console.log("Form data to send:", formData);
-
     const formDataToSend = new FormData();
-
-    // Append the form fields to FormData object
     for (const key in formData) {
       if (formData[key]) {
         formDataToSend.append(key, formData[key]);
       }
     }
 
-    // Log FormData before sending
-    for (let pair of formDataToSend.entries()) {
-      console.log(pair[0] + ": " + pair[1]);
-    }
-
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/lrsa", // Ensure this is the correct endpoint
+        "http://localhost:3000/api/lrsa",
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -69,22 +57,20 @@ function AddLrsa() {
 
   return (
     <div>
-      {/* Button to Open Modal */}
       <button
-        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+        className="bg-blue-500 text-white px-6 py-3 rounded-md"
         onClick={() => setShowModal(true)}>
         Upload LRSA
       </button>
 
-      {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-md w-1/3 p-6 space-y-4">
+          <div className="bg-white rounded-lg shadow-md w-2/3 lg:w-1/2 p-6 space-y-4">
             <h2 className="text-2xl font-semibold text-center">
               Upload File LRSA
             </h2>
             <form onSubmit={handleSubmit}>
-              <div className="space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Jenis */}
                 <div>
                   <label className="block font-medium text-sm text-gray-600">
@@ -219,6 +205,24 @@ function AddLrsa() {
                     <option value="Shariah">Shariah</option>
                     <option value="Banking">Banking</option>
                     <option value="Corporate">Corporate</option>
+                    <option value="Banking & Financial Institution">
+                      Banking & Financial Institution
+                    </option>
+                    <option value="Consumer Banking">Consumer Banking</option>
+                    <option value="Risk Management">Risk Management</option>
+                    <option value="Compliance Corporate">
+                      Compliance Corporate
+                    </option>
+                    <option value="Affairs & Legal">Affairs & Legal</option>
+                    <option value="Treasury & Capital Market Strategy">
+                      Treasury & Capital Market Strategy
+                    </option>
+                    <option value="Finance & SPAPM">Finance & SPAPM</option>
+                    <option value="Operation & IT">Operation & IT</option>
+                    <option value="Human Resources">Human Resources</option>
+                    <option value="DPS (Dewan Pengawas Syariah)">
+                      DPS (Dewan Pengawas Syariah)
+                    </option>
                   </select>
                 </div>
 
@@ -253,6 +257,9 @@ function AddLrsa() {
                     <option value="">Select</option>
                     <option value="Project">Project</option>
                     <option value="Non Project">Non Project</option>
+                    <option value="Secretariat">Secretariat</option>
+                    <option value="DPS">DPS</option>
+                    <option value="Dana Kebajikan">Dana Kebajikan</option>
                   </select>
                 </div>
 
@@ -289,6 +296,7 @@ function AddLrsa() {
                     <option value="E-LESA-SAS">E-LESA-SAS</option>
                     <option value="LRSA-SLA">LRSA-SLA</option>
                     <option value="E-LESA-SLA">E-LESA-SLA</option>
+                    <option value="E-LRSA-SLA-NN">E-LRSA-SLA-NN</option>
                   </select>
                 </div>
 
@@ -313,11 +321,13 @@ function AddLrsa() {
                     <option value="PRG Program">PRG Program</option>
                     <option value="FIN Financing">FIN Financing</option>
                     <option value="FUND Funding">FUND Funding</option>
+                    <option value="MC MarComm">MC MarComm</option>
+                    <option value="E Others">E Others</option>
                   </select>
                 </div>
 
                 {/* File LRSA */}
-                <div>
+                <div className="col-span-2">
                   <label className="block font-medium text-sm text-gray-600">
                     File LRSA
                   </label>
@@ -336,12 +346,12 @@ function AddLrsa() {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition">
+                  className="bg-gray-300 text-gray-700 px-6 py-3 rounded-md">
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition">
+                  className="bg-blue-500 text-white px-6 py-3 rounded-md">
                   Submit
                 </button>
               </div>

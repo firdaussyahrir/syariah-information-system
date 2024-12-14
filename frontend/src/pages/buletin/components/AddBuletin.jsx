@@ -49,29 +49,29 @@ function AddBuletin() {
     <div>
       {/* Button to Open Modal */}
       <button
-        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+        className="bg-blue-500 text-white px-6 py-3 rounded-md"
         onClick={() => setShowModal(true)}>
         Upload Buletin
       </button>
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-md w-1/3 p-6 space-y-4">
-            <h2 className="text-2xl font-semibold text-center">
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-md max-w-[800px] w-full p-6 space-y-6">
+            <h2 className="text-xl font-medium text-center text-gray-800">
               Upload Buletin
             </h2>
             <form onSubmit={handleSubmit}>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm font-medium text-gray-700">
                     Kelompok
                   </label>
                   <select
                     name="kelompok"
                     value={formData.kelompok}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required>
                     <option value="">Select</option>
                     <option value="Produk">Produk</option>
@@ -88,7 +88,7 @@ function AddBuletin() {
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm font-medium text-gray-700">
                     Nomor
                   </label>
                   <input
@@ -96,13 +96,13 @@ function AddBuletin() {
                     name="nomor"
                     value={formData.nomor}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm font-medium text-gray-700">
                     Tanggal Masehi
                   </label>
                   <input
@@ -110,13 +110,13 @@ function AddBuletin() {
                     name="tanggalMasehi"
                     value={formData.tanggalMasehi}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm font-medium text-gray-700">
                     Judul
                   </label>
                   <input
@@ -124,20 +124,20 @@ function AddBuletin() {
                     name="judul"
                     value={formData.judul}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm font-medium text-gray-700">
                     Kategori
                   </label>
                   <select
                     name="kategori"
                     value={formData.kategori}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required>
                     <option value="">Select</option>
                     <option value="Financing">Financing</option>
@@ -158,7 +158,7 @@ function AddBuletin() {
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm font-medium text-gray-700">
                     Sub-Kategori
                   </label>
                   <input
@@ -166,33 +166,33 @@ function AddBuletin() {
                     name="subKategori"
                     value={formData.subKategori}
                     onChange={handleInputChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-medium text-sm text-gray-600">
+                  <label className="block text-sm font-medium text-gray-700">
                     File Buletin
                   </label>
                   <input
                     type="file"
                     onChange={handleFileChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end space-x-4 mt-4">
+              <div className="flex justify-end space-x-4 mt-6">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition">
+                  className="bg-gray-300 text-gray-700 px-6 py-3 rounded-md hover:bg-gray-400 transition">
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition">
+                  className="bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600 transition">
                   Submit
                 </button>
               </div>
