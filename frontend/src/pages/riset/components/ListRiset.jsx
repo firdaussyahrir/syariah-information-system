@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaTrashAlt } from "react-icons/fa"; // Icon for delete button
+import { FaTrashAlt, FaFilePdf } from "react-icons/fa"; // Add FaFilePdf for PDF icon
 
 function ListRiset() {
   const [risetData, setRisetData] = useState([]);
@@ -14,7 +14,7 @@ function ListRiset() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/riset"); // Update with correct API URL
+        const response = await axios.get("http://localhost:3000/api/riset");
         setRisetData(response.data);
       } catch (error) {
         console.error("Error fetching riset data:", error);
@@ -37,7 +37,7 @@ function ListRiset() {
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     const date = new Date(dateString);
-    return date.toLocaleDateString("id-ID", options); // 'id-ID' for Indonesian locale (adjust if needed)
+    return date.toLocaleDateString("id-ID", options); // 'id-ID' for Indonesian locale
   };
 
   // Filter the data based on selected filters
@@ -49,8 +49,8 @@ function ListRiset() {
     );
   });
 
+  // Handle delete
   const handleDelete = async (id) => {
-    // Konfirmasi untuk menghapus riset
     const confirmed = window.confirm(
       "Are you sure you want to delete this riset?"
     );
@@ -62,9 +62,8 @@ function ListRiset() {
         );
 
         if (response.status === 200) {
-          // Perbarui state untuk menghapus data riset yang sudah dihapus dari daftar
           setRisetData((prevData) =>
-            prevData.filter((riset) => riset.id !== id)
+            prevData.filter((riset) => riset._id !== id)
           );
           alert("Riset deleted successfully!");
         } else {
@@ -75,6 +74,12 @@ function ListRiset() {
         alert("Failed to delete riset.");
       }
     }
+  };
+
+  // Handle opening PDF in a new tab
+  const handleOpenPdf = (fileName) => {
+    const pdfUrl = `http://localhost:3000/uploads/${fileName}`;
+    window.open(pdfUrl, "_blank"); // Open in a new tab
   };
 
   // Get the current year and create a range for the last 5 years dynamically
@@ -181,7 +186,7 @@ function ListRiset() {
         </thead>
         <tbody>
           {filteredData.map((data, index) => (
-            <tr key={data.id} className="border-t">
+            <tr key={data._id} className="border-t">
               <td className="py-2 px-4 text-sm text-gray-800">{index + 1}</td>
               <td className="py-2 px-4 text-sm text-gray-800">{data.nomor}</td>
               <td className="py-2 px-4 text-sm text-gray-800">
@@ -198,9 +203,16 @@ function ListRiset() {
                 {data.subKategori || "-"}
               </td>
               <td className="py-2 px-4 text-center">
+                {/* Open PDF Button */}
                 <button
-                  onClick={() => handleDelete(data.id)}
-                  className="text-red-500 hover:text-red-700 text-sm">
+                  onClick={() => handleOpenPdf(data.fileRiset)}
+                  className="text-blue-500 hover:text-blue-700 text-sm ml-2">
+                  <FaFilePdf />
+                </button>
+                {/* Delete Button */}
+                <button
+                  onClick={() => handleDelete(data._id)}
+                  className="text-red-500 hover:text-red-700 text-sm ml-2">
                   <FaTrashAlt />
                 </button>
               </td>

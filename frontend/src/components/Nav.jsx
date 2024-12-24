@@ -1,11 +1,28 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Logo } from "../assets"; // Ganti dengan path logo yang sesuai
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Cek apakah ada token JWT di localStorage
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const handleLogout = () => {
+    // Menghapus token dari localStorage
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/login"); // Redirect ke halaman login setelah logout
+  };
 
   return (
     <nav className="bg-white shadow-md border-b border-gray-300 sticky top-0 z-20">
@@ -63,16 +80,20 @@ const Nav = () => {
             className="text-gray-800 font-medium hover:text-blue-600 transition duration-300">
             Profile
           </Link>
-          {/* Link Login */}
-          <Link
-            to="/login"
-            className="text-gray-800 font-medium hover:text-blue-600 transition duration-300">
-            Login
-          </Link>
-          {/* Tombol Logout */}
-          <button className="text-gray-800 font-medium hover:text-blue-600 transition duration-300">
-            Logout
-          </button>
+          {/* Jika sudah login, tampilkan tombol logout */}
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="text-gray-800 font-medium hover:text-blue-600 transition duration-300">
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="text-gray-800 font-medium hover:text-blue-600 transition duration-300">
+              Login
+            </Link>
+          )}
         </div>
 
         {/* Hamburger Menu untuk Mobile */}
@@ -114,19 +135,25 @@ const Nav = () => {
             className="text-gray-800 font-medium hover:text-blue-600 transition duration-300">
             Buletin
           </Link>
-          <Link
-            to="/login"
-            className="text-gray-800 font-medium hover:text-blue-600 transition duration-300">
-            Login
-          </Link>
+          {/* Jika sudah login, tampilkan tombol logout */}
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="text-gray-800 font-medium hover:text-blue-600 transition duration-300">
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="text-gray-800 font-medium hover:text-blue-600 transition duration-300">
+              Login
+            </Link>
+          )}
           <Link
             to="/profile"
             className="text-gray-800 font-medium hover:text-blue-600 transition duration-300">
             Profile
           </Link>
-          <button className="text-gray-800 font-medium hover:text-blue-600 transition duration-300">
-            Logout
-          </button>
         </div>
       )}
     </nav>

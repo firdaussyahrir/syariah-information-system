@@ -5,6 +5,9 @@ import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 
 import Home from "./pages/home/Home";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Profile from "./pages/profile/Profile";
+import About from "./pages/about/About";
 import Login from "./pages/login/Login";
 
 import Dps from "./pages/dps/Dps";
@@ -12,7 +15,6 @@ import Lrsa from "./pages/lrsa/Lrsa";
 import Riset from "./pages/riset/Riset";
 import Buletin from "./pages/buletin/Buletin";
 import Regulasi from "./pages/regulasi/Regulasi";
-import Dashboard from "./dashboard/Dashboard";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
             <Route path="/buletin" element={<Buletin />} />
             <Route path="/regulasi" element={<Regulasi />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </div>

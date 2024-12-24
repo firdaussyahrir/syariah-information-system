@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaTrashAlt } from "react-icons/fa"; // Importing trash icon
+import { FaTrashAlt, FaEye, FaEdit } from "react-icons/fa"; // Import Edit icon
 
 const ListBuletin = () => {
   const [buletins, setBuletins] = useState([]);
@@ -9,9 +9,19 @@ const ListBuletin = () => {
     kelompok: "",
     kategori: "",
   });
+  const [selectedBuletin, setSelectedBuletin] = useState(null); // State for editing a specific Buletin
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // State to manage modal visibility
+  const [formData, setFormData] = useState({
+    nomor: "",
+    tanggalMasehi: "",
+    judul: "",
+    kelompok: "",
+    kategori: "",
+    subKategori: "",
+    fileBuletin: "",
+  }); // State to handle form input
 
   useEffect(() => {
-    // Fetching the data from the server
     const fetchBuletins = async () => {
       try {
         const response = await axios.get("http://localhost:3000/api/buletin");
@@ -34,9 +44,7 @@ const ListBuletin = () => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this Buletin?"
     );
-    if (!confirmDelete) {
-      return; // Do nothing if the user cancels
-    }
+    if (!confirmDelete) return;
 
     try {
       const response = await axios.delete(
@@ -50,22 +58,17 @@ const ListBuletin = () => {
     }
   };
 
-  // Filter the buletins based on selected filters
-  const filteredBuletins = buletins.filter((buletin) => {
-    return (
-      (!filters.tahun ||
-        new Date(buletin.tanggalMasehi).getFullYear().toString() ===
-          filters.tahun) &&
-      (!filters.kelompok || buletin.kelompok === filters.kelompok) &&
-      (!filters.kategori || buletin.kategori === filters.kategori)
-    );
-  });
+  // Handle view PDF (open in a new tab)
+  const handleViewPdf = (fileName) => {
+    const pdfUrl = `http://localhost:3000/uploads/${fileName}`;
+    window.open(pdfUrl, "_blank");
+  };
 
   // Format the date to a more readable format
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     const date = new Date(dateString);
-    return date.toLocaleDateString("id-ID", options); // 'id-ID' for Indonesian locale
+    return date.toLocaleDateString("id-ID", options);
   };
 
   // Get the current year and create a range for the last 5 years dynamically
@@ -77,6 +80,61 @@ const ListBuletin = () => {
     }
     return years;
   };
+
+  // Handle opening the modal to edit a Buletin
+  const handleEdit = (buletin) => {
+    setFormData({
+      nomor: buletin.nomor,
+      tanggalMasehi: buletin.tanggalMasehi,
+      judul: buletin.judul,
+      kelompok: buletin.kelompok,
+      kategori: buletin.kategori,
+      subKategori: buletin.subKategori || "",
+      fileBuletin: buletin.fileBuletin,
+    });
+    setSelectedBuletin(buletin);
+    setIsEditModalOpen(true); // Open the modal
+  };
+
+  // Handle form input changes for editing
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  // Handle submitting the edited Buletin
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/api/buletin/${selectedBuletin._id}`,
+        formData
+      );
+      alert(response.data.message);
+      setBuletins(
+        buletins.map((buletin) =>
+          buletin._id === selectedBuletin._id
+            ? { ...buletin, ...formData }
+            : buletin
+        )
+      );
+      setIsEditModalOpen(false); // Close the modal after success
+    } catch (error) {
+      console.error("Error updating Buletin:", error);
+      alert("Failed to update Buletin.");
+    }
+  };
+
+  // Filter the buletins based on selected filters
+  const filteredBuletins = buletins.filter((buletin) => {
+    return (
+      (!filters.tahun ||
+        new Date(buletin.tanggalMasehi).getFullYear().toString() ===
+          filters.tahun) &&
+      (!filters.kelompok || buletin.kelompok === filters.kelompok) &&
+      (!filters.kategori || buletin.kategori === filters.kategori)
+    );
+  });
 
   return (
     <div className="container mx-auto p-6">
@@ -172,30 +230,28 @@ const ListBuletin = () => {
         </thead>
         <tbody>
           {filteredBuletins.map((buletin, index) => (
-            <tr key={buletin._id} className="border-t">
-              <td className="py-2 px-4 text-sm text-gray-800">{index + 1}</td>
-              <td className="py-2 px-4 text-sm text-gray-800">
-                {buletin.nomor}
-              </td>
-              <td className="py-2 px-4 text-sm text-gray-800">
-                {formatDate(buletin.tanggalMasehi)}
-              </td>
-              <td className="py-2 px-4 text-sm text-gray-800">
-                {buletin.judul}
-              </td>
-              <td className="py-2 px-4 text-sm text-gray-800">
-                {buletin.kelompok}
-              </td>
-              <td className="py-2 px-4 text-sm text-gray-800">
-                {buletin.kategori}
-              </td>
-              <td className="py-2 px-4 text-sm text-gray-800">
-                {buletin.subKategori || "-"}
-              </td>
-              <td className="py-2 px-4 text-center">
+            <tr key={buletin._id} className="border-b">
+              <td className="py-2 px-4">{index + 1}</td>
+              <td className="py-2 px-4">{buletin.nomor}</td>
+              <td className="py-2 px-4">{formatDate(buletin.tanggalMasehi)}</td>
+              <td className="py-2 px-4">{buletin.judul}</td>
+              <td className="py-2 px-4">{buletin.kelompok}</td>
+              <td className="py-2 px-4">{buletin.kategori}</td>
+              <td className="py-2 px-4">{buletin.subKategori}</td>
+              <td className="py-2 px-4">
+                <button
+                  onClick={() => handleViewPdf(buletin.fileBuletin)}
+                  className="text-blue-500 hover:text-blue-700 mr-4">
+                  <FaEye />
+                </button>
+                <button
+                  onClick={() => handleEdit(buletin)}
+                  className="text-yellow-500 hover:text-yellow-700 mr-4">
+                  <FaEdit />
+                </button>
                 <button
                   onClick={() => handleDelete(buletin._id)}
-                  className="text-red-500 hover:text-red-700 text-sm">
+                  className="text-red-500 hover:text-red-700">
                   <FaTrashAlt />
                 </button>
               </td>
@@ -203,6 +259,121 @@ const ListBuletin = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Modal Edit Buletin */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+            <h2 className="text-2xl font-bold mb-4">Edit Buletin</h2>
+            <form onSubmit={handleEditSubmit}>
+              <div className="mb-4">
+                <label
+                  htmlFor="nomor"
+                  className="block text-sm font-medium text-gray-700">
+                  Nomor
+                </label>
+                <input
+                  type="text"
+                  id="nomor"
+                  name="nomor"
+                  value={formData.nomor}
+                  onChange={handleFormChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="tanggalMasehi"
+                  className="block text-sm font-medium text-gray-700">
+                  Tanggal Masehi
+                </label>
+                <input
+                  type="date"
+                  id="tanggalMasehi"
+                  name="tanggalMasehi"
+                  value={formData.tanggalMasehi}
+                  onChange={handleFormChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="judul"
+                  className="block text-sm font-medium text-gray-700">
+                  Judul
+                </label>
+                <input
+                  type="text"
+                  id="judul"
+                  name="judul"
+                  value={formData.judul}
+                  onChange={handleFormChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="kelompok"
+                  className="block text-sm font-medium text-gray-700">
+                  Kelompok
+                </label>
+                <input
+                  type="text"
+                  id="kelompok"
+                  name="kelompok"
+                  value={formData.kelompok}
+                  onChange={handleFormChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="kategori"
+                  className="block text-sm font-medium text-gray-700">
+                  Kategori
+                </label>
+                <input
+                  type="text"
+                  id="kategori"
+                  name="kategori"
+                  value={formData.kategori}
+                  onChange={handleFormChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="subKategori"
+                  className="block text-sm font-medium text-gray-700">
+                  Sub Kategori
+                </label>
+                <input
+                  type="text"
+                  id="subKategori"
+                  name="subKategori"
+                  value={formData.subKategori}
+                  onChange={handleFormChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+
+              <div className="flex justify-between">
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                  Update Buletin
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsEditModalOpen(false)}
+                  className="bg-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-400">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

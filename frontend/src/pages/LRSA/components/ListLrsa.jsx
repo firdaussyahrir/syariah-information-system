@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaTrashAlt } from "react-icons/fa"; // Importing trash icon
+import { FaTrashAlt, FaFilePdf } from "react-icons/fa";
 
 function ListLrsa() {
   const [lrsaData, setLrsaData] = useState([]);
@@ -76,6 +76,12 @@ function ListLrsa() {
         alert("Failed to delete LRSA");
       }
     }
+  };
+
+  // Handle opening PDF in a new tab
+  const handleOpenPdf = (fileName) => {
+    const pdfUrl = `http://localhost:3000/uploads/${fileName}`;
+    window.open(pdfUrl, "_blank"); // Open the PDF file in a new tab
   };
 
   return (
@@ -248,6 +254,11 @@ function ListLrsa() {
                     onClick={() => handleDelete(item._id)}
                     className="text-red-500 hover:text-red-700 text-sm">
                     <FaTrashAlt />
+                  </button>
+                  <button
+                    onClick={() => handleOpenPdf(item.fileLrsa)}
+                    className="text-green-500 hover:text-green-700 text-sm ml-2">
+                    <FaFilePdf />
                   </button>
                 </td>
               </tr>

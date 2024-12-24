@@ -10,6 +10,7 @@ const buletinRoute = require("./routes/buletin.routes.js");
 const regulasiRoute = require("./routes/regulasi.routes.js");
 const lrsaRoute = require("./routes/lrsa.routes.js");
 const userRoute = require("./routes/user.routes.js");
+const authRoutes = require("./routes/auth.routes.js");
 
 const app = express();
 const port = 3000;
@@ -20,7 +21,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Konfigurasi CORS
 app.use(cors());
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: "http://localhost:5173", methods: ["GET", "POST"] }));
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -29,9 +31,11 @@ app.use("/api/dps", dpsRoute);
 app.use("/api/riset", risetRoute);
 app.use("/api/buletin", buletinRoute);
 app.use("/api/regulasi", regulasiRoute);
+app.use("/api/auth", authRoutes);
 app.use("/api/lrsa", lrsaRoute);
 app.use("/api/user", userRoute);
 
+//app.use("/api/auth", authRoutes);
 app.get("/", (req, res) => {
   res.send("Welcome to Syariah Information System");
 });
@@ -40,7 +44,9 @@ app.listen(port, () => {
   console.log(`SIS Running on Port ${port}`);
 });
 
-mongoose.connect("mongodb+srv://13020210014:sis@cluster0.tjnmk.mongodb.net/");
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://localhost:27017/your_database_name"
+);
 const db = mongoose.connection;
 db.on("error", (err) => console.log(err));
 db.once("open", () => console.log("Connected to MongoDB"));

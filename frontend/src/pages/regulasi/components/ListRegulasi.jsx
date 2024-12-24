@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaTrashAlt } from "react-icons/fa"; // Icon for delete button
+import { FaTrashAlt, FaFilePdf } from "react-icons/fa"; // Import icon untuk file PDF
 
 function ListRegulasi() {
   const [regulasiData, setRegulasiData] = useState([]);
@@ -14,7 +14,7 @@ function ListRegulasi() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/regulasi"); // Update with correct API URL
+        const response = await axios.get("http://localhost:3000/api/regulasi"); // Update dengan URL API yang benar
         setRegulasiData(response.data);
       } catch (error) {
         console.error("Error fetching regulasi data:", error);
@@ -37,7 +37,7 @@ function ListRegulasi() {
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     const date = new Date(dateString);
-    return date.toLocaleDateString("id-ID", options); // 'id-ID' for Indonesian locale (adjust if needed)
+    return date.toLocaleDateString("id-ID", options); // 'id-ID' untuk format tanggal Indonesia
   };
 
   // Filter the data based on selected filters
@@ -75,6 +75,11 @@ function ListRegulasi() {
         alert("Failed to delete regulasi.");
       }
     }
+  };
+
+  const handleOpenPDF = (fileRegulasi) => {
+    const pdfUrl = `http://localhost:3000/uploads/${fileRegulasi}`;
+    window.open(pdfUrl, "_blank");
   };
 
   return (
@@ -188,6 +193,11 @@ function ListRegulasi() {
                 {formatDate(data.tanggal)}
               </td>
               <td className="py-2 px-4 text-center">
+                <button
+                  onClick={() => handleOpenPDF(data.fileRegulasi)}
+                  className="text-blue-500 hover:text-blue-700 text-sm mr-2">
+                  <FaFilePdf />
+                </button>
                 <button
                   onClick={() => handleDelete(data._id)}
                   className="text-red-500 hover:text-red-700 text-sm">
