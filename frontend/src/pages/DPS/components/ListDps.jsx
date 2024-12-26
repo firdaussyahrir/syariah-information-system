@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaTrashAlt, FaEdit, FaFilePdf } from "react-icons/fa";
-import EditDps from "./EditDps"; // Import komponen EditDps
-import ReadDps from "./ReadDps";
+import { FaTrashAlt, FaFilePdf } from "react-icons/fa"; // Removed FaEdit
+import { Link } from "react-router-dom"; // Still keep Link if you plan to use it elsewhere
 
 function ListDps() {
   const [dpsList, setDpsList] = useState([]);
@@ -12,7 +11,6 @@ function ListDps() {
     kelompok: "",
     kategori: "",
   });
-  const [selectedDpsId, setSelectedDpsId] = useState(null);
 
   // Fetching DPS data
   useEffect(() => {
@@ -143,11 +141,7 @@ function ListDps() {
                   className="text-red-500 hover:text-red-700 p-1 rounded-full focus:outline-none">
                   <FaTrashAlt size={16} />
                 </button>
-                <button
-                  onClick={() => setSelectedDpsId(dps._id)} // Set the selected DPS ID for editing
-                  className="text-blue-500 hover:text-blue-700 p-1 rounded-full focus:outline-none">
-                  <FaEdit size={16} />
-                </button>
+
                 <button
                   onClick={() =>
                     window.open(
@@ -163,14 +157,6 @@ function ListDps() {
           ))}
         </tbody>
       </table>
-
-      {/* Edit Modal */}
-      {selectedDpsId && (
-        <EditDps
-          dpsId={selectedDpsId}
-          closeModal={() => setSelectedDpsId(null)} // Close modal when edit is done or canceled
-        />
-      )}
     </div>
   );
 }

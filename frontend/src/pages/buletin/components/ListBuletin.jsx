@@ -81,50 +81,6 @@ const ListBuletin = () => {
     return years;
   };
 
-  // Handle opening the modal to edit a Buletin
-  const handleEdit = (buletin) => {
-    setFormData({
-      nomor: buletin.nomor,
-      tanggalMasehi: buletin.tanggalMasehi,
-      judul: buletin.judul,
-      kelompok: buletin.kelompok,
-      kategori: buletin.kategori,
-      subKategori: buletin.subKategori || "",
-      fileBuletin: buletin.fileBuletin,
-    });
-    setSelectedBuletin(buletin);
-    setIsEditModalOpen(true); // Open the modal
-  };
-
-  // Handle form input changes for editing
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  // Handle submitting the edited Buletin
-  const handleEditSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.put(
-        `http://localhost:3000/api/buletin/${selectedBuletin._id}`,
-        formData
-      );
-      alert(response.data.message);
-      setBuletins(
-        buletins.map((buletin) =>
-          buletin._id === selectedBuletin._id
-            ? { ...buletin, ...formData }
-            : buletin
-        )
-      );
-      setIsEditModalOpen(false); // Close the modal after success
-    } catch (error) {
-      console.error("Error updating Buletin:", error);
-      alert("Failed to update Buletin.");
-    }
-  };
-
   // Filter the buletins based on selected filters
   const filteredBuletins = buletins.filter((buletin) => {
     return (
@@ -244,11 +200,7 @@ const ListBuletin = () => {
                   className="text-blue-500 hover:text-blue-700 mr-4">
                   <FaEye />
                 </button>
-                <button
-                  onClick={() => handleEdit(buletin)}
-                  className="text-yellow-500 hover:text-yellow-700 mr-4">
-                  <FaEdit />
-                </button>
+
                 <button
                   onClick={() => handleDelete(buletin._id)}
                   className="text-red-500 hover:text-red-700">
@@ -259,121 +211,6 @@ const ListBuletin = () => {
           ))}
         </tbody>
       </table>
-
-      {/* Modal Edit Buletin */}
-      {isEditModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
-            <h2 className="text-2xl font-bold mb-4">Edit Buletin</h2>
-            <form onSubmit={handleEditSubmit}>
-              <div className="mb-4">
-                <label
-                  htmlFor="nomor"
-                  className="block text-sm font-medium text-gray-700">
-                  Nomor
-                </label>
-                <input
-                  type="text"
-                  id="nomor"
-                  name="nomor"
-                  value={formData.nomor}
-                  onChange={handleFormChange}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="tanggalMasehi"
-                  className="block text-sm font-medium text-gray-700">
-                  Tanggal Masehi
-                </label>
-                <input
-                  type="date"
-                  id="tanggalMasehi"
-                  name="tanggalMasehi"
-                  value={formData.tanggalMasehi}
-                  onChange={handleFormChange}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="judul"
-                  className="block text-sm font-medium text-gray-700">
-                  Judul
-                </label>
-                <input
-                  type="text"
-                  id="judul"
-                  name="judul"
-                  value={formData.judul}
-                  onChange={handleFormChange}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="kelompok"
-                  className="block text-sm font-medium text-gray-700">
-                  Kelompok
-                </label>
-                <input
-                  type="text"
-                  id="kelompok"
-                  name="kelompok"
-                  value={formData.kelompok}
-                  onChange={handleFormChange}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="kategori"
-                  className="block text-sm font-medium text-gray-700">
-                  Kategori
-                </label>
-                <input
-                  type="text"
-                  id="kategori"
-                  name="kategori"
-                  value={formData.kategori}
-                  onChange={handleFormChange}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="subKategori"
-                  className="block text-sm font-medium text-gray-700">
-                  Sub Kategori
-                </label>
-                <input
-                  type="text"
-                  id="subKategori"
-                  name="subKategori"
-                  value={formData.subKategori}
-                  onChange={handleFormChange}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              </div>
-
-              <div className="flex justify-between">
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                  Update Buletin
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsEditModalOpen(false)}
-                  className="bg-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-400">
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
