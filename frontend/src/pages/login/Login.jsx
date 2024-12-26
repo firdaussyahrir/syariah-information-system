@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Untuk navigasi setelah login
+import axios from "axios"; // Gunakan axios untuk API request
 
 function Login() {
   const [error, setError] = useState("");
@@ -7,23 +9,22 @@ function Login() {
     password: "",
   });
 
+  const navigate = useNavigate(); // Inisialisasi navigate
+
   const login = async ({ email, password }) => {
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const res = await axios.post("http://localhost:3000/api/auth/login", {
+        email,
+        password,
       });
-      console.log("JALAN");
 
-      const data = await res.json();
+      // Simpan token di localStorage setelah login berhasil
+      localStorage.setItem("token", res.data.token);
 
-      if (!res.ok) {
-        throw new Error(data.error || "Something went wrong");
-      }
-      alert("Login successful!");
+      // Arahkan pengguna ke dashboard setelah login berhasil
+      navigate("/dashboard");
     } catch (err) {
-      setError(err.message);
+      setError("Invalid email or password.");
     }
   };
 
@@ -91,11 +92,6 @@ function Login() {
             Login
           </button>
         </form>
-        <div className="mt-6 text-center">
-          <a href="#" className="text-blue-500 hover:text-blue-700 text-sm">
-            Forgot password?
-          </a>
-        </div>
       </div>
     </div>
   );

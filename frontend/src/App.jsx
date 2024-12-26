@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import React, { useState } from "react";
+import React from "react";
 
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
@@ -16,6 +16,9 @@ import Riset from "./pages/riset/Riset";
 import Buletin from "./pages/buletin/Buletin";
 import Regulasi from "./pages/regulasi/Regulasi";
 
+import PrivateRoute from "./components/PrivateRoute"; // Import PrivateRoute
+import UseScrollTop from "./components/UseScrollTop"; // Import untuk scroll top
+
 function App() {
   return (
     <div id="app" className="flex flex-col min-h-screen bg-white">
@@ -23,21 +26,87 @@ function App() {
       <div className="flex flex-1 flex-col">
         <div className="flex-1">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/dps" element={<Dps />} />
-            <Route path="/lrsa" element={<Lrsa />} />
-            <Route path="/riset" element={<Riset />} />
-            <Route path="/buletin" element={<Buletin />} />
-            <Route path="/regulasi" element={<Regulasi />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/about" element={<About />} />
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/dps"
+              element={
+                <PrivateRoute>
+                  <Dps />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/lrsa"
+              element={
+                <PrivateRoute>
+                  <Lrsa />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/riset"
+              element={
+                <PrivateRoute>
+                  <Riset />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/buletin"
+              element={
+                <PrivateRoute>
+                  <Buletin />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/regulasi"
+              element={
+                <PrivateRoute>
+                  <Regulasi />
+                </PrivateRoute>
+              }
+            />
+
+            {/* Protect dashboard and profile routes */}
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/about"
+              element={
+                <PrivateRoute>
+                  <About />
+                </PrivateRoute>
+              }
+            />
             <Route path="/login" element={<Login />} />
           </Routes>
         </div>
       </div>
       <Footer />
-      <useScrollTop />
+      <UseScrollTop /> {/* Menambahkan fitur scroll ke atas */}
     </div>
   );
 }
