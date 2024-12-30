@@ -7,7 +7,7 @@ function ListDps() {
   const [dpsList, setDpsList] = useState([]);
   const [filters, setFilters] = useState({
     jenis: "",
-    tahun: "",
+    tanggal: "", // Filter for Date
     kelompok: "",
     kategori: "",
   });
@@ -16,7 +16,9 @@ function ListDps() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/dps");
+        const response = await axios.get("http://localhost:3000/api/dps", {
+          params: filters, // Send filters as query params
+        });
         setDpsList(response.data);
       } catch (error) {
         console.error("Error fetching DPS data:", error);
@@ -24,7 +26,7 @@ function ListDps() {
     };
 
     fetchData();
-  }, []);
+  }, [filters]); // Refetch when filters change
 
   // Handle filter change
   const handleFilterChange = (e) => {
@@ -44,18 +46,6 @@ function ListDps() {
       day: "numeric",
     });
   };
-
-  // Filter the data based on selected filters
-  const filteredDps = dpsList.filter((dps) => {
-    return (
-      (!filters.jenis || dps.jenis === filters.jenis) &&
-      (!filters.tahun ||
-        new Date(dps.tanggalMasehi).getFullYear() ===
-          parseInt(filters.tahun)) &&
-      (!filters.kelompok || dps.kelompok === filters.kelompok) &&
-      (!filters.kategori || dps.kategori === filters.kategori)
-    );
-  });
 
   const handleDelete = async (id) => {
     const confirmed = window.confirm(
@@ -82,7 +72,101 @@ function ListDps() {
   return (
     <div className="container mx-auto p-6">
       {/* Filter Section */}
-      <div className="flex space-x-4 mb-6">{/* Filter Selects... */}</div>
+      <div className="flex space-x-4 mb-6">
+        {/* Filter Jenis */}
+        <div>
+          <label
+            htmlFor="jenis"
+            className="block text-sm font-medium text-gray-700">
+            Jenis
+          </label>
+          <select
+            name="jenis"
+            id="jenis"
+            value={filters.jenis}
+            onChange={handleFilterChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="">All Jenis</option>
+            <option value="Opini DPS">Opini DPS</option>
+            <option value="Risalah Rapat">Risalah Rapat</option>
+          </select>
+        </div>
+
+        {/* Filter Tanggal */}
+        <div>
+          <label
+            htmlFor="tanggal"
+            className="block text-sm font-medium text-gray-700">
+            Tanggal
+          </label>
+          <input
+            type="date"
+            name="tanggal"
+            id="tanggal"
+            value={filters.tanggal}
+            onChange={handleFilterChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+
+        {/* Filter Kelompok */}
+        <div>
+          <label
+            htmlFor="kelompok"
+            className="block text-sm font-medium text-gray-700">
+            Kelompok
+          </label>
+          <select
+            name="kelompok"
+            id="kelompok"
+            value={filters.kelompok}
+            onChange={handleFilterChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="">All Kelompok</option>
+            <option value="Produk">Produk</option>
+            <option value="Financing Model">Financing Model</option>
+            <option value="Program">Program</option>
+            <option value="Policy & Procedure">Policy & Procedure</option>
+            <option value="Fitur Produk">Fitur Produk</option>
+            <option value="Dana Kebajikan & Zakat">
+              Dana Kebajikan & Zakat
+            </option>
+            <option value="Lain-Lain">Lain-Lain</option>
+          </select>
+        </div>
+
+        {/* Filter Kategori */}
+        <div>
+          <label
+            htmlFor="kategori"
+            className="block text-sm font-medium text-gray-700">
+            Kategori
+          </label>
+          <select
+            name="kategori"
+            id="kategori"
+            value={filters.kategori}
+            onChange={handleFilterChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="">All Kategori</option>
+            <option value="Financing">Financing</option>
+            <option value="Asuransi">Asuransi</option>
+            <option value="Kepatuhan Syariah">Kepatuhan Syariah</option>
+            <option value="Dana Kebajikan & Zakat">
+              Dana Kebajikan & Zakat
+            </option>
+            <option value="Funding">Funding</option>
+            <option value="Syariah Card">Syariah Card</option>
+            <option value="Investment">Investment</option>
+            <option value="Trade Finance">Trade Finance</option>
+            <option value="Layanan Jasa">Layanan Jasa</option>
+            <option value="Zakat">Zakat</option>
+            <option value="Treasury">Treasury</option>
+            <option value="DBLM">DBLM</option>
+            <option value="Lain-Lain">Lain-Lain</option>
+          </select>
+        </div>
+      </div>
 
       {/* Table Section */}
       <table className="min-w-full table-auto border-collapse bg-white rounded-md shadow-sm">
@@ -116,7 +200,7 @@ function ListDps() {
           </tr>
         </thead>
         <tbody>
-          {filteredDps.map((dps, index) => (
+          {dpsList.map((dps, index) => (
             <tr key={dps._id} className="border-t">
               <td className="py-2 px-4 text-sm text-gray-800">{index + 1}</td>
               <td className="py-2 px-4 text-sm text-gray-800">{dps.jenis}</td>
@@ -135,13 +219,11 @@ function ListDps() {
                 {dps.subKategori}
               </td>
               <td className="py-2 px-4 text-center space-x-4">
-                {/* Action buttons (icons only) */}
                 <button
                   onClick={() => handleDelete(dps._id)}
                   className="text-red-500 hover:text-red-700 p-1 rounded-full focus:outline-none">
                   <FaTrashAlt size={16} />
                 </button>
-
                 <button
                   onClick={() =>
                     window.open(
